@@ -20,6 +20,22 @@
    #+END_SRC
 
 * General Settings
+   Normally, the =user-emacs-directory= stores everything in a
+   =.emacs.d= directory in the home directory, however, Aquamacs
+   overrides that, and since I now feel the need to use these settings
+   for both editors (sure feels like XEmacs all over again).
+
+   Any way, I have a new global variable for that:
+
+   #+BEGIN_SRC elisp
+     (defconst ha/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
+
+     (defun ha/emacs-subdirectory (d) (expand-file-name d ha/emacs-directory))
+   #+END_SRC
+
+   #+RESULTS:
+   : ha/emacs-subdirectory
+
 ** Directory Structure
 
    In case this is the first time running this on a computer, we need
@@ -27,9 +43,72 @@
 
    #+BEGIN_SRC elisp
      (let* ((subdirs '("elisp" "backups"))
-            (fulldirs (mapcar (lambda (d) (users-emacs-directory d)) subdirs)))
+            (fulldirs (mapcar (lambda (d) (ha/emacs-subdirectory d)) subdirs)))
        (dolist (dir fulldirs)
          (when (not (file-exists-p dir))
            (message "Make directory: %s" dir)
            (make-directory dir))))
    #+END_SRC
+
+* Package Initialization
+** Package Manager
+
+   Emacs has become like every other operating system, and now has a
+   [[http://tromey.com/elpa/][package manager]] with its own collection repository, but since it is
+   so conservative, we need to add more repositories to get all the
+   sweet goodness, I demand.
+
+   #+BEGIN_SRC elisp
+     (require 'package)
+
+     (setq package-archives '(("org"       . "http://orgmode.org/elpa/")
+                              ("gnu"       . "http://elpa.gnu.org/packages/")
+                              ("melpa"     . "http://melpa.org/packages/")
+                              ("marmalade" . "http://marmalade-repo.org/packages/")))
+
+     (package-initialize)
+     (package-refresh-contents)
+   #+END_SRC
+
+** Use-Package
+
+   Using [[https://github.com/jwiegley/use-package][use-package]] to automatically install certain packages, as
+   well as the ease of lazily loading them.
+
+   #+BEGIN_SRC elisp
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+
+     (require 'use-package)
+   #+END_SRC
+
+
+
+* Technical Artifacts
+
+** Load up the Local Configuration
+
+   Before we finish, we need to check if there is a local file for us
+   to load and evaluate.  We assume the local file has been tangled
+   and provides the =init-local= key:
+
+   #+BEGIN_SRC elisp
+     (require 'init-local nil t)
+   #+END_SRC
+
+
+   #+BEGIN_SRC elisp
+     (provide 'init-main)
+   #+END_SRC
+
+   Before you can build this on a new system, make sure that you put
+   the cursor over any of these properties, and hit: =C-c C-c=
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args:elisp  :tangle ~/.emacs.d/elisp/init-main.el
+#+PROPERTY:    header-args:sh     :tangle no
+#+PROPERTY:    header-args:       :eval no-export   :comments org
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+   #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js

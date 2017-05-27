@@ -20,13 +20,15 @@
 ;;     $EMACS --load "./build.el"
 
 ;;; Code:
+(setq debug-on-error t)
 
 (require 'org)         ;; The org-mode goodness
-;;(require 'ob)          ;; org-mode export system
-;;(require 'ob-tangle)   ;; org-mode tangling process
+(require 'ob)          ;; org-mode export system
+(require 'ob-tangle)   ;; org-mode tangling process
 
 ;; My special functions for doing script are not in a loadable location.q
-(defvar script-funcs-src (concat (file-name-directory (buffer-file-name))
+(defvar script-funcs-src (concat (file-name-directory
+				  (or load-file-name buffer-file-name))
                                  "elisp/shell-script-funcs.el"))
 (require 'shell-script-funcs script-funcs-src)
 
@@ -50,7 +52,7 @@
   (interactive)
 
   ;; Initially create some of the destination directories
-  (ha/mkdir "$HOME/.oh-my-zsh/themes")
+;;  (ha/mkdir "$HOME/.oh-my-zsh/themes")
   (ha/mkdir "${ha/emacs-directory}/elisp")
 
   (ha/tangle-files "${dot-files-src}/*.org")
@@ -110,4 +112,4 @@
 (ha/build-dot-files)  ;; Do it
 
 (provide 'dot-files)
-;;; build.el ends here
+;;build.el ends here

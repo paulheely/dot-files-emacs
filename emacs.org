@@ -1,0 +1,35 @@
+#+TITLE:  Emacs Configuration File
+#+AUTHOR: Paul Heely
+
+
+* Introduction
+
+  This is my =.emacs= file ... well, the top-level of it anyway.
+  I've written it in a [[http://www.orgmode.org][literate style]], to make it easy to explain.
+  The notes also include hyperlinks to where I stole it. ;-)
+
+** Loading this File
+
+   To "load" the contents of this file, add the following to =$HOME/.emacs=:
+
+   #+BEGIN_SRC elisp :tangle no
+     ;; Load our Literate Programming version of our Dot Emacs
+     (unless (boundp 'aquamacs-version)
+       (load-file "~/.emacs.d/elisp/init-main.el")
+       (server-start))
+   #+END_SRC
+
+* General Settings
+** Directory Structure
+
+   In case this is the first time running this on a computer, we need
+   to make sure the following directories have been created.
+
+   #+BEGIN_SRC elisp
+     (let* ((subdirs '("elisp" "backups"))
+            (fulldirs (mapcar (lambda (d) (users-emacs-directory d)) subdirs)))
+       (dolist (dir fulldirs)
+         (when (not (file-exists-p dir))
+           (message "Make directory: %s" dir)
+           (make-directory dir))))
+   #+END_SRC

@@ -105,7 +105,7 @@
          (shell-command (concat "cd " dot-files-src "; git pull"))))
     (if (not (= git-results 0))
         (message "Can't pull the goodness. Pull from git by hand.")
-      (load-file (concat dot-files-src "/emacs.d/shell-script-funcs.el"))
+      (load-file (concat dot-files-src "/elisp/shell-script-funcs.el"))
       (load-file (concat dot-files-src "/build.el"))
       (require 'init-main))))
 

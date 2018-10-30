@@ -9,7 +9,7 @@ bin/brb.py
 /emacs-eshell.html
 /emacs-local.org
 #*
-#emacs.org#
+\#*\#
 results
 /TAGS
 elisp/in-progress

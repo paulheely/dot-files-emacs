@@ -52,7 +52,7 @@
   (interactive)
 
   ;; Initially create some of the destination directories
-;;  (ha/mkdir "$HOME/.oh-my-zsh/themes")
+  ;;  (ha/mkdir "$HOME/.oh-my-zsh/themes")
   (ha/mkdir "${ha/emacs-directory}/elisp")
 
   (ha/tangle-files "${dot-files-src}/*.org")
@@ -80,7 +80,7 @@
   ;; (mapc 'byte-compile-file
   ;;       (ha/get-files "${ha/emacs-directory}/elisp/*.el" t))
 
-  (message "Finished building dot-files- Resetting Emacs.")
+  (Message "Finished building dot-files- Resetting Emacs.")
   (require 'init-main (ha/get-path "${user-emacs-directory}elisp/init-main.el")))
 
 

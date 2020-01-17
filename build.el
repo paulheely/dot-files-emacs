@@ -59,7 +59,7 @@
 
   ;; Some Elisp files are just symlinked instead of tangled...
   (ha/mksymlinks "${dot-files-src}/elisp/*.el"
-                 "${ha/emacs-directory}/elisp")
+                 "${ha/emacs-directory}/elisp/")
 
   ;; Just link the entire directory instead of copying the snippets:
   (ha/mksymlink  "${dot-files-src}/snippets"
